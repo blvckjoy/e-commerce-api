@@ -33,4 +33,15 @@ userRouter.post("/register", async (req, res) => {
    }
 });
 
+// Get all users
+userRouter.get("/", async (req, res) => {
+   try {
+      const users = await User.find();
+      res.json(users);
+   } catch (error) {
+      console.error("Error getting all users:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+   }
+});
+
 module.exports = userRouter;
