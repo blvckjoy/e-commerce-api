@@ -3,17 +3,6 @@ const userRouter = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 
-// Get all users
-userRouter.get("/", async (req, res) => {
-   try {
-      const users = await User.find();
-      res.json(users);
-   } catch (error) {
-      console.error("Error getting all users:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-   }
-});
-
 // Register a user
 userRouter.post("/register", async (req, res) => {
    try {
@@ -39,7 +28,5 @@ userRouter.post("/register", async (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
    }
 });
-
-// Login a user
 
 module.exports = userRouter;
