@@ -2,10 +2,14 @@ const express = require("express");
 const userRouter = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const { validateUser } = require("../validators/userValidation");
 
 // Register a user
 userRouter.post("/register", async (req, res) => {
    try {
+      const { error } = validateUser(req.body);
+      if (error) return res.status(400).json(error.details[0].message);
+
       const { username, email, password } = req.body;
       const existingUser = await User.findOne({
          $or: [{ email }, { username }],
