@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { validateUser } = require("../validators/userValidation");
+const jwt = require("jsonwebtoken");
 
 // Register a user
 userRouter.post("/register", async (req, res) => {
@@ -40,6 +41,29 @@ userRouter.get("/", async (req, res) => {
       res.json(users);
    } catch (error) {
       console.error("Error getting all users:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+   }
+});
+
+// Login a user
+userRouter.post("/login", async (req, res) => {
+   try {
+      const { email, password } = req.body;
+      const validUser = await User.findOne({ email });
+      if (!validUser)
+         return res.status(404).json({ message: "User not found" });
+
+      const isValid = await bcrypt.compare(password, validUser.password);
+      if (!isValid)
+         return res.status(400).json({ message: "Invalid credentials" });
+
+      const token = jwt.sign({ id: validUser._id }, process.env.JWT_TOKEN, {
+         expiresIn: "1hr",
+      });
+
+      res.json(token);
+   } catch (error) {
+      console.error("Error logging in a user:", error);
       res.status(500).json({ message: "Internal Server Error" });
    }
 });
