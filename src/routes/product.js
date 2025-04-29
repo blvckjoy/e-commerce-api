@@ -3,7 +3,6 @@ const productRouter = express.Router();
 const Product = require("../models/product");
 const authMiddleware = require("../middlewares/auth");
 const { authRole } = require("../middlewares/authRole");
-const { default: mongoose } = require("mongoose");
 
 // Create a product
 productRouter.post("/", authMiddleware, authRole("admin"), async (req, res) => {
