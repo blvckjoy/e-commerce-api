@@ -111,4 +111,35 @@ productRouter.delete(
    }
 );
 
+// Add product review
+productRouter.post(
+   "/:id/reviews",
+   authMiddleware,
+   authRole("basic"),
+   async (req, res) => {
+      try {
+         const product = await Product.findById(req.params.id);
+         if (!product)
+            return res.status(404).json({ message: "Product not found" });
+
+         const userId = req.user.id;
+         const { rating, comment } = req.body;
+         if (!comment)
+            return res.status(400).json({ message: "Review cannot be empty" });
+
+         product.reviews.push({
+            user: userId,
+            rating: rating,
+            comment: comment,
+         });
+         await product.save();
+
+         res.status(200).json({ message: "Review added" });
+      } catch (error) {
+         console.error("Error adding a review:", error);
+         res.status(500).json({ message: "Internal Server Error" });
+      }
+   }
+);
+
 module.exports = productRouter;
