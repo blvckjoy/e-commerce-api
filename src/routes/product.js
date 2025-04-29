@@ -46,4 +46,18 @@ productRouter.get("/", async (req, res) => {
    }
 });
 
+// Get a single product
+productRouter.get("/:productId", async (req, res) => {
+   try {
+      const product = await Product.findById(req.params.productId);
+      if (!product)
+         return res.status(404).json({ message: "Product not found" });
+
+      res.status(200).json(product);
+   } catch (error) {
+      console.error("Error getting a product:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+   }
+});
+
 module.exports = productRouter;
