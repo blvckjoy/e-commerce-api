@@ -90,4 +90,25 @@ productRouter.patch(
    }
 );
 
+// Delete a product
+productRouter.delete(
+   "/:productId",
+   authMiddleware,
+   authRole("admin"),
+   async (req, res) => {
+      try {
+         const product = await Product.findById(req.params.productId);
+         if (!product)
+            return res.status(404).json({ message: "Product not found" });
+
+         await Product.findByIdAndDelete(req.params.productId);
+
+         res.status(200).json({ message: "Product deleted successfully" });
+      } catch (error) {
+         console.error("Error deleting a product:", error);
+         res.status(500).json({ message: "Internal Server Error" });
+      }
+   }
+);
+
 module.exports = productRouter;
