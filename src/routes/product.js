@@ -1,9 +1,11 @@
 const express = require("express");
 const productRouter = express.Router();
 const Product = require("../models/product");
+const authMiddleware = require("../middlewares/auth");
+const { authRole } = require("../middlewares/authRole");
 
 // Create a product
-productRouter.post("/", async (req, res) => {
+productRouter.post("/", authMiddleware, authRole("admin"), async (req, res) => {
    try {
       const {
          name,
