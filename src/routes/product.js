@@ -143,24 +143,19 @@ productRouter.post(
 );
 
 // Get product reviews
-productRouter.get(
-   "/:id/reviews",
-   authMiddleware,
-   authRole("admin"),
-   async (req, res) => {
-      try {
-         const product = await Product.findById(req.params.id);
-         if (!product)
-            return res.status(404).json({ message: "Product not found" });
+productRouter.get("/:id/reviews", authMiddleware, async (req, res) => {
+   try {
+      const product = await Product.findById(req.params.id);
+      if (!product)
+         return res.status(404).json({ message: "Product not found" });
 
-         await product.populate("reviews.user", "username");
+      await product.populate("reviews.user", "username");
 
-         res.status(200).json({ reviews: product.reviews || [] });
-      } catch (error) {
-         console.error("Error getting reviews:", error);
-         res.status(500).json({ message: "Internal Server Error" });
-      }
+      res.status(200).json({ reviews: product.reviews || [] });
+   } catch (error) {
+      console.error("Error getting reviews:", error);
+      res.status(500).json({ message: "Internal Server Error" });
    }
-);
+});
 
 module.exports = productRouter;
