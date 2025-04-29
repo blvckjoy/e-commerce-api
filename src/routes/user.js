@@ -11,7 +11,7 @@ userRouter.post("/register", async (req, res) => {
       const { error } = validateUser(req.body);
       if (error) return res.status(400).json(error.details[0].message);
 
-      const { username, email, password } = req.body;
+      const { username, email, password, role } = req.body;
       const existingUser = await User.findOne({
          $or: [{ email }, { username }],
       });
@@ -24,6 +24,7 @@ userRouter.post("/register", async (req, res) => {
          username,
          email,
          password: hashedPassword,
+         role,
       });
       await user.save();
 
@@ -57,9 +58,13 @@ userRouter.post("/login", async (req, res) => {
       if (!isValid)
          return res.status(400).json({ message: "Invalid credentials" });
 
-      const token = jwt.sign({ id: validUser._id }, process.env.JWT_TOKEN, {
-         expiresIn: "1hr",
-      });
+      const token = jwt.sign(
+         { id: validUser._id, role: validUser.role },
+         process.env.JWT_TOKEN,
+         {
+            expiresIn: "1hr",
+         }
+      );
 
       res.json(token);
    } catch (error) {
