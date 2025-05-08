@@ -134,7 +134,7 @@ productRouter.post(
          });
          await product.save();
 
-         res.status(200).json({ message: "Review added" });
+         res.status(201).json({ message: "Review added" });
       } catch (error) {
          console.error("Error adding a review:", error);
          res.status(500).json({ message: "Internal Server Error" });
