@@ -17,9 +17,12 @@ A robust RESTful API for an e-commerce platform built with Node.js, Express, and
    -  Support for product attributes like brand, color, and battery life
 
 -  Review System
+
    -  Add product reviews with ratings and comments
    -  View product reviews
    -  User-specific reviews
+
+-  Integration Tests
 
 ## Prerequisites
 
@@ -101,6 +104,42 @@ The API includes comprehensive error handling for:
 -  Authorization failures
 -  Resource not found
 -  Server errors
+
+## Integration Tests
+
+To run the integration tests for the E-commerce Platform RESTful API, execute the following command from the root of the project
+
+```bash
+npm test
+```
+
+## Integration Tests Results
+
+```
+ PASS  __tests__/app.integration.test.js
+  E-Commerce API Integration Test
+    Authentication
+      ✓ should register an admin user successfully (121 ms)
+      ✓ should register a basic user successfully (70 ms)
+      ✓ should login an admin user & receive a token (65 ms)
+      ✓ should login a basic user & receive a token (64 ms)
+      ✓ should get all users (9 ms)
+    Product Management
+      ✓ should allow admin user to create a new product successfully (12 ms)
+      ✓ should not allow basic user to create a new product (8 ms)
+      ✓ should get all products (6 ms)
+      ✓ should get a specific product by ID (12 ms)
+      ✓ should allow admin user to update a product successfully (14 ms)
+      ✓ should allow basic user to add a review to a product successfully (12 ms)
+      ✓ should get all reviews for a product (16 ms)
+      ✓ should allow admin user to delete a product successfully (8 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       13 passed, 13 total
+Snapshots:   0 total
+Time:        1.417 s, estimated 2 s
+Ran all test suites.
+```
 
 ## Dependencies
 
