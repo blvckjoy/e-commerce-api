@@ -66,7 +66,7 @@ userRouter.post("/login", async (req, res) => {
          }
       );
 
-      res.json(token);
+      res.json({ token: token });
    } catch (error) {
       console.error("Error logging in a user:", error);
       res.status(500).json({ message: "Internal Server Error" });
